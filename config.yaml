@@ -1,0 +1,20 @@
+baseurl: ''
+description: Sell your house fast in Cornwall, Devon & Somerset
+header_pages:
+- _pages/contact.md
+include:
+- _pages
+minimal_mistakes_skin: default
+permalink: pretty
+plugins:
+- jekyll-feed
+- jekyll-include-cache
+- jekyll-seo-tag
+primary_phone: 07931 476 744
+sass:
+  quiet_deps: true
+  style: compressed
+site_name: Quick
+theme: minimal-mistakes-jekyll
+title: Quick Sale South West
+url: https://quicksalesouthwest.co.uk
