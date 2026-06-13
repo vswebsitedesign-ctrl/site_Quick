@@ -125,10 +125,62 @@
     @media (max-width: 768px) {
       .mobile-sticky-footer { display: block; }
     }
+  
+.site-footer {
+  background: #1A365D;
+  color: #F8FAFC;
+  padding: 3rem 2rem 1rem 2rem;
+  margin-top: 3rem;
+}
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto 2rem auto;
+}
+.footer-col {
+  flex: 1;
+  min-width: 180px;
+}
+.footer-col h3 {
+  color: #7A9A6F;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.footer-col p {
+  color: #F8FAFC;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.footer-col ul a {
+  color: #F8FAFC;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.footer-col ul a:hover {
+  color: #7A9A6F;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1rem;
+  text-align: center;
+}
+.footer-bottom p {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+}
   </style>
   <link rel="canonical" href="{{ canonical_url }}">
 </head>
-<body><main>{{ content }}</main>
+<body>{{ header }}<main>{{ content }}</main>{{ footer }}{{ mobile_footer }}
 
 <div class="page-wrap">
   

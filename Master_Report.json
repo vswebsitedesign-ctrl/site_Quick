@@ -181,6 +181,10 @@
     {
       "date": "2026-05-25",
       "change": "Pushed to GitHub: remote set to https://github.com/vswebsitedesign-ctrl/site_Quick.git. GitHub Actions will now build on push."
+    },
+    {
+      "date": "2026-06-03",
+      "change": "AI safety governance block added: AI_READ_THIS_FIRST, session_workflow, recovery, ai_incident_log. Adapted from site_cic and site_tales proven session safety patterns. All rules, mandatory workflows, deploy commands, and emergency rollback procedures now documented as first-read entry point for every AI session."
     }
   ],
   "known_issues": {
@@ -235,5 +239,128 @@
     "deploy_configured": false,
     "deploy_status": "PENDING \u2014 no IP or deploy user set in workflow",
     "recommended_method": "GitHub Actions + rsync over SSH as Plesk domain system user (not root) \u2014 see site_JKRS deploy.yml as reference implementation"
+  },
+  "AI_READ_THIS_FIRST": {
+    "project": "site_Quick",
+    "domain": "quicksalesouthwest.co.uk",
+    "live_server": "NOT YET CONFIGURED",
+    "deploy_user": "root",
+    "ssh_key": "~/.ssh/github_actions_bat",
+    "project_root": "/home/chubert/omni-builder/sites/site_Quick",
+    "master_report_path": "/home/chubert/omni-builder/sites/site_Quick/Master_Report.json",
+    "source_of_truth": "data/pages.json",
+    "build_command": "cd /home/chubert/omni-builder/sites/site_Quick && python3 build.py",
+    "output_directory": "./build/",
+    "theme": "theme/base.html",
+    "github_remote": "https://github.com/vswebsitedesign-ctrl/site_Quick.git",
+    "recovery": [
+      "git clone https://github.com/vswebsitedesign-ctrl/site_Quick.git",
+      "python3 build.py"
+    ],
+    "mandatory_session_workflow": [
+      "1. READ this Master Report in full before any action",
+      "2. bash snapshot.sh \"label\" \u2014 run before EVERY risky change",
+      "3. bash restore.sh snapshots/X \u2014 instant restore if anything breaks",
+      "4. Commit and push only after local build verified clean"
+    ],
+    "emergency_rollback": "git checkout main && git reset --hard HEAD~1",
+    "deploy_command": "SERVER NOT YET CONFIGURED \u2014 do not deploy",
+    "send_php_deploy": "SERVER NOT YET CONFIGURED",
+    "github_actions": "build-only \u2014 NO rsync in deploy.yml \u2014 all deploys are manual rsync from local machine",
+    "ai_rules": [
+      "NEVER modify files inside ./build/ \u2014 fully overwritten on every build",
+      "NEVER rewrite build.py from scratch \u2014 targeted edits only",
+      "NEVER run sed/perl/regex on build/ files",
+      "NEVER commit directly to main without human confirmation",
+      "NEVER guess paths or filenames \u2014 read Master Report first",
+      "NEVER deploy via GitHub Actions rsync \u2014 manual rsync only",
+      "NEVER leave send.php redirecting anywhere other than /thank-you/",
+      "NEVER delete fields from Master Report \u2014 append only",
+      "ALWAYS read Master Report in full before any bash command",
+      "ALWAYS snapshot before every risky change",
+      "ALWAYS verify changes with a read-back command before building",
+      "ALWAYS batch fact-finding commands into a single paste",
+      "ALWAYS confirm best practice and no guessing with every command",
+      "Content changes go in data/pages.json only",
+      "Layout changes go in theme/base.html only if unavoidable",
+      "build.py must generate robots.txt and sitemap.xml on every build",
+      "Homepage slug rule: after every build copy build/{homepage_slug}/index.html to build/index.html"
+    ]
+  },
+  "session_workflow": {
+    "description": "Mandatory workflow for every AI session",
+    "before_any_work": "Read Master_Report.json in full \u2014 no exceptions",
+    "before_risky_change": "bash snapshot.sh \"description\" \u2014 snapshots all critical files",
+    "restore_from_snapshot": "bash restore.sh snapshots/TIMESTAMP_label \u2014 restores all critical files",
+    "session_end": "Commit with descriptive message, push to GitHub, update Master Report changelog",
+    "emergency_rollback": "git checkout main && git reset --hard HEAD~1",
+    "ai_mandatory_rules": [
+      "Read Master Report before any work begins",
+      "Snapshot before every risky change",
+      "Never commit directly to main during a session without human confirmation",
+      "Never make changes without telling the human exactly what will change first",
+      "Never run sed, perl, or regex on build/ files",
+      "Never rewrite build.py \u2014 targeted edits only",
+      "Never guess \u2014 always verify from disk",
+      "Batch all fact-finding into single commands"
+    ]
+  },
+  "recovery": {
+    "description": "Full site recovery from scratch \u2014 two commands only",
+    "step_1": "git clone https://github.com/vswebsitedesign-ctrl/site_Quick.git",
+    "step_2": "python3 build.py",
+    "note": "All assets, content, and build logic are in the repo. pages.json tracked via Git LFS \u2014 ensure lfs: true on checkout."
+  },
+  "ai_incident_log": {
+    "description": "Permanent log of AI errors on this project \u2014 read before every session",
+    "incidents": [],
+    "permanent_fix": "AI must read this entire Master Report before generating any bash commands. No assumptions. No guessing. Verify everything from disk."
+  },
+  "cross_project_lessons_20260613": {
+    "source": "Imported from site_tales-from-a-harrogate-caravan master-report.json",
+    "rules": [
+      "Image optimisation: convert all PNG/JPG to WebP via cwebp -q 85 before adding to assets/ \u2014 never leave raw PNG/JPG (or Zone.Identifier files) in assets/images",
+      "Snapshot before every risky change: bash snapshot.sh \"label\" \u2014 create snapshot.sh and restore.sh if not already present",
+      "Never use sed/perl for multiline edits to theme/base.html or build scripts \u2014 use targeted Python string replacement only",
+      "If rsync deploy is configured later: NEVER use --delete flag \u2014 it wipes server-only files (e.g. send.php, admin/) not present in build/. Use scp separately for those files",
+      "Mandatory edit sequence: snapshot -> targeted edit -> build -> verify locally before any commit/deploy"
+    ]
+  },
+  "session_20260613_seo_audit_and_rescue": {
+    "timestamp": "2026-06-13",
+    "status": "COMPLETE_PENDING_DEPLOY",
+    "summary": "GSC audit found 9/600+ pages indexed. Root causes identified: (1) wrong domain 'Quick.co.uk' baked into sitemap/canonical via engine fallback, (2) 588 location pages (294 sell-house-fast-*, 294 house-clearance-*) live on production server but completely absent from data/pages.json, build/, and git - orphaned Jekyll-era pages at risk of permanent deletion on next deploy.",
+    "completed": [
+      "GSC service account key.json configured and working (Search Console API)",
+      "Confirmed live server: 217.154.33.12, vhosts path /var/www/vhosts/quicksalesouthwest.co.uk/httpdocs/, key ~/.ssh/github_actions_bat",
+      "engine/build_sites.py patched (shared omni-builder engine): added {{ canonical_url }} token substitution, mirrors existing sitemap url logic - snapshot saved to engine_snapshots/",
+      "theme/base.html patched: added self-referencing <link rel='canonical' href='{{ canonical_url }}'> before </head>",
+      "Created domain.txt with correct value 'https://quicksalesouthwest.co.uk' - fixes wrong-domain bug (was generating https://Quick.co.uk in sitemap.xml and canonical tags)",
+      "Build verified locally: canonical tags and sitemap.xml now show correct domain and correct per-page URLs",
+      "snapshot.sh and restore.sh created (were missing) - minimal version, snapshots data/theme/_includes",
+      "Rescued 294 sell-house-fast-* pages from live server to rescued_location_pages/ (not yet in git/build)",
+      "Rescued 297 house-clearance-* pages from live server to rescued_hc_pages/ (294 usable, 3 are existing hub pages already in pages.json: areas-we-cover, contact, thank-you)",
+      "Extracted and cleaned 294 sell-house-fast-* pages to data/location_pages_extracted.json (4.2MB) - stripped DOCTYPE/head/nav/footer, kept page-wrap content + page-specific <style>",
+      "Extracted and cleaned 294 house-clearance-* pages to data/hc_pages_extracted.json (4.5MB) - stripped duplicate hc-header block, kept hero through final <style>",
+      "Spot-checked extraction quality on newquay and launceston samples - both clean, correctly bounded, no leaked markup",
+      "Canonical tags working correctly per-page across all 608 pages",
+      "domain.txt fix confirmed - sitemap and canonicals now show quicksalesouthwest.co.uk",
+      "Header and footer injected via engine from _includes/header.html and _includes/footer.html",
+      "Footer CSS added to theme/base.html - applies to all pages including location pages",
+      "utility_slugs extended in engine - header-house-clearance, footer-house-clearance, mobile-sticky-footer excluded from sitemap",
+      "Stub page 2026-04-09-my-first-post removed from pages.json",
+      "Sitemap verified clean: 603 URLs, correct domain, no utility/stub pages",
+      "key.json moved to omni-builder root (outside site git repo)",
+      "Temp artifacts removed: rescued_location_pages/, rescued_hc_pages/, gsc_audit_report.json, extraction staging files"
+    ],
+    "pending": [
+      "PENDING: Resubmit sitemap to GSC after deploy and request re-crawl - URL: https://search.google.com/search-console",
+      "PENDING: Internal linking strategy - /areas-we-cover/ and /house-clearance-areas-we-cover/ should link to all location pages (future session)",
+      "PENDING: engine_snapshots/ retention policy - shared engine snapshots accumulate across all omni-builder sites (future session)"
+    ],
+    "critical_reminders": [
+      "engine/build_sites.py changes affect ALL sites on omni-builder - canonical_url token and header/footer injection now active for all sites",
+      "Sites without _includes/header.html or footer.html will silently skip injection - check other sites before their next build"
+    ]
   }
 }
