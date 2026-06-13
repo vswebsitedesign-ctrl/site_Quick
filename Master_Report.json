@@ -377,7 +377,8 @@
     ],
     "pending": [
       "PENDING: Clean up duplicate CSS in original 27 pages body_content (sticky-header class appears multiple times per page \u2014 cosmetic only, not breaking)",
-      "PENDING: engine_snapshots/ retention policy \u2014 shared engine snapshots accumulate across all omni-builder sites (future session)"
+      "PENDING: engine_snapshots/ retention policy \u2014 shared engine snapshots accumulate across all omni-builder sites (future session)",
+      "REMINDER: Check GSC in 2-4 weeks (around 2026-07-11) \u2014 verify sitemap crawl count has increased from 9 indexed, check coverage report for any new errors, monitor impressions for sell-house-fast-* and house-clearance-* pages"
     ],
     "critical_reminders": [
       "engine/build_sites.py changes affect ALL sites on omni-builder - canonical_url token and header/footer injection now active for all sites",
