@@ -12,3 +12,6 @@ Thumbs.db
 
 # Secrets (if any)
 *.env
+snapshots/
+engine_snapshots/
+key.json
