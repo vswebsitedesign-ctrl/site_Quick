@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "last_updated": "2026-05-26",
+  "version": "1.1.0",
+  "last_updated": "2026-06-13",
   "project_metadata": {
     "name": "Quick Sale South West",
     "domain": "https://quicksalesouthwest.co.uk",
@@ -35,7 +35,7 @@
   },
   "data_schema": {
     "pages.json": {
-      "total_pages": 28,
+      "total_pages": 608,
       "slugs": [
         "testimonials",
         "cookie-policy",
@@ -74,8 +74,18 @@
     "all_sites_build_command": "cd /home/chubert/omni-builder && python3 engine/build_sites.py",
     "single_site_build_command": "cd /home/chubert/omni-builder && python3 -c \"from engine.build_sites import build_single_site; build_single_site('sites/site_Quick')\"",
     "serve_command": "cd /home/chubert/omni-builder/sites/site_Quick/build && python3 -m http.server 8000",
-    "notes": "Engine does plain string replace only. base.html must use {{ content }} exclusively. All includes must be inlined into base.html. Never append serve command to build command.",
-    "engine_fix": "if __name__ == __main__ guard added to build_sites.py"
+    "notes": "Engine does plain string replace. Supports tokens: {{ content }}, {{ title }}, {{ description }}, {{ slug }}, {{ canonical_url }}, {{ header }}, {{ footer }}, {{ mobile_footer }}. Header/footer injected from _includes/ if token present in template.",
+    "engine_fix": "if __name__ == __main__ guard added to build_sites.py",
+    "template_tokens": [
+      "{{ content }}",
+      "{{ title }}",
+      "{{ description }}",
+      "{{ slug }}",
+      "{{ canonical_url }}",
+      "{{ header }}",
+      "{{ footer }}",
+      "{{ mobile_footer }}"
+    ]
   },
   "ai_governance": {
     "rules": [
@@ -185,11 +195,15 @@
     {
       "date": "2026-06-03",
       "change": "AI safety governance block added: AI_READ_THIS_FIRST, session_workflow, recovery, ai_incident_log. Adapted from site_cic and site_tales proven session safety patterns. All rules, mandatory workflows, deploy commands, and emergency rollback procedures now documented as first-read entry point for every AI session."
+    },
+    {
+      "date": "2026-06-13",
+      "change": "SEO audit: 581 location pages rescued and merged into pages.json. Engine patched: canonical_url token, header/footer injection, utility_slugs extended. domain.txt created. Sitemap fixed to 603 URLs with correct domain. Header/footer working across all pages."
     }
   ],
   "known_issues": {
     "template_tags_in_base": "base.html may contain {% %} or {{ title }} tags the engine cannot process \u2014 use {{ content }} only",
-    "includes_not_rendered": "engine has no include system \u2014 all global components must be inlined into base.html",
+    "includes_not_rendered": "RESOLVED 2026-06-13: engine now supports {{ header }}, {{ footer }}, {{ mobile_footer }} tokens \u2014 injected from _includes/header.html, footer.html, mobile-sticky-footer.html",
     "assets_not_in_build": "assets/ directory is not copied to build/ automatically \u2014 serve from project root or copy manually",
     "port_clash": "always check port 8000 is free before serving \u2014 build only and refresh if server already running",
     "assets_build_sync": "assets/ must be re-copied into build/ after every build \u2014 cp -r assets/ build/assets/ from each site root",
@@ -219,10 +233,10 @@
     "old_jekyll_root": "/home/chubert/Quick"
   },
   "content_status": {
-    "pages_built": "unknown \u2014 not yet audited",
+    "pages_built": 608,
     "base_html_status": "fixed (Jekyll tags removed, {{ content }} injected)",
     "assets_in_build": "unknown",
-    "last_build": "2026-05-25",
+    "last_build": "2026-06-13",
     "build_result": "SUCCESS",
     "live_crawl": "Crawled 2026-05-25: 8 added, 12 updated from https://quicksalesouthwest.co.uk",
     "all_sites_built": true
@@ -235,15 +249,15 @@
     "workflow_file": ".github/workflows/deploy.yml",
     "git_initialized": true,
     "git_remote": "https://github.com/vswebsitedesign-ctrl/site_Quick.git",
-    "server_ip": "NOT YET CONFIGURED",
-    "deploy_configured": false,
-    "deploy_status": "PENDING \u2014 no IP or deploy user set in workflow",
+    "server_ip": "217.154.33.12",
+    "deploy_configured": true,
+    "deploy_status": "READY \u2014 manual rsync from local machine via github_actions_bat key",
     "recommended_method": "GitHub Actions + rsync over SSH as Plesk domain system user (not root) \u2014 see site_JKRS deploy.yml as reference implementation"
   },
   "AI_READ_THIS_FIRST": {
     "project": "site_Quick",
     "domain": "quicksalesouthwest.co.uk",
-    "live_server": "NOT YET CONFIGURED",
+    "live_server": "217.154.33.12",
     "deploy_user": "root",
     "ssh_key": "~/.ssh/github_actions_bat",
     "project_root": "/home/chubert/omni-builder/sites/site_Quick",
@@ -264,7 +278,7 @@
       "4. Commit and push only after local build verified clean"
     ],
     "emergency_rollback": "git checkout main && git reset --hard HEAD~1",
-    "deploy_command": "SERVER NOT YET CONFIGURED \u2014 do not deploy",
+    "deploy_command": "rsync -avz --no-delete -e \"ssh -i ~/.ssh/github_actions_bat\" build/ root@217.154.33.12:/var/www/vhosts/quicksalesouthwest.co.uk/httpdocs/",
     "send_php_deploy": "SERVER NOT YET CONFIGURED",
     "github_actions": "build-only \u2014 NO rsync in deploy.yml \u2014 all deploys are manual rsync from local machine",
     "ai_rules": [
