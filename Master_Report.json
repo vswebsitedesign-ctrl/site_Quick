@@ -199,6 +199,10 @@
     {
       "date": "2026-06-13",
       "change": "SEO audit: 581 location pages rescued and merged into pages.json. Engine patched: canonical_url token, header/footer injection, utility_slugs extended. domain.txt created. Sitemap fixed to 603 URLs with correct domain. Header/footer working across all pages."
+    },
+    {
+      "date": "2026-06-13",
+      "change": "Session complete: 603 pages deployed, canonical tags live, sitemap resubmitted to GSC, robots.txt and send.php verified."
     }
   ],
   "known_issues": {
@@ -342,7 +346,7 @@
   },
   "session_20260613_seo_audit_and_rescue": {
     "timestamp": "2026-06-13",
-    "status": "COMPLETE_PENDING_DEPLOY",
+    "status": "COMPLETE",
     "summary": "GSC audit found 9/600+ pages indexed. Root causes identified: (1) wrong domain 'Quick.co.uk' baked into sitemap/canonical via engine fallback, (2) 588 location pages (294 sell-house-fast-*, 294 house-clearance-*) live on production server but completely absent from data/pages.json, build/, and git - orphaned Jekyll-era pages at risk of permanent deletion on next deploy.",
     "completed": [
       "GSC service account key.json configured and working (Search Console API)",
@@ -365,12 +369,15 @@
       "Stub page 2026-04-09-my-first-post removed from pages.json",
       "Sitemap verified clean: 603 URLs, correct domain, no utility/stub pages",
       "key.json moved to omni-builder root (outside site git repo)",
-      "Temp artifacts removed: rescued_location_pages/, rescued_hc_pages/, gsc_audit_report.json, extraction staging files"
+      "Temp artifacts removed: rescued_location_pages/, rescued_hc_pages/, gsc_audit_report.json, extraction staging files",
+      "Deployed to live server 217.154.33.12 via rsync \u2014 603 pages live with correct canonicals, header, footer, and sitemap",
+      "robots.txt verified correct \u2014 allows all, points to sitemap",
+      "send.php verified live on server \u2014 not touched by rsync as expected",
+      "Sitemap resubmitted to GSC \u2014 fresh crawl of 603 URLs triggered"
     ],
     "pending": [
-      "PENDING: Resubmit sitemap to GSC after deploy and request re-crawl - URL: https://search.google.com/search-console",
-      "PENDING: Internal linking strategy - /areas-we-cover/ and /house-clearance-areas-we-cover/ should link to all location pages (future session)",
-      "PENDING: engine_snapshots/ retention policy - shared engine snapshots accumulate across all omni-builder sites (future session)"
+      "PENDING: Clean up duplicate CSS in original 27 pages body_content (sticky-header class appears multiple times per page \u2014 cosmetic only, not breaking)",
+      "PENDING: engine_snapshots/ retention policy \u2014 shared engine snapshots accumulate across all omni-builder sites (future session)"
     ],
     "critical_reminders": [
       "engine/build_sites.py changes affect ALL sites on omni-builder - canonical_url token and header/footer injection now active for all sites",
